@@ -12,9 +12,9 @@ resource "aws_instance" "ec2_instance" {
        #!/bin/bash
            yum -y java-1.8.0-openjdk-devel 
             yum -y install tomcat 
-               systemctl enable tomcat 
-               systemctl start tomcat  
-                echo " //etc/systemd/system/{{to muser}}.service "
+             sudo systemctl enable tomcat 
+              sudo systemctl start tomcat  
+               
 EOF
   tags= {
     Name = "tomcat_instance"

@@ -8,22 +8,28 @@ resource "aws_instance" "ec2_instance" {
   key_name = "ansible"
   instance_type = "t2.micro"
   security_groups= [ "security_tom_port"]
-      user_data = <<-EOF
-       #!/bin/bash
-           yum -y java-1.8.0-openjdk-devel 
-            yum -y install tomcat 
-             sudo systemctl enable tomcat 
-              sudo systemctl start tomcat  
-               
-EOF
+     
   tags= {
     Name = "tomcat_instance"
   }
 }
-
+connection {
+type = "ssh"
+user = "ec2-user"
+private_key= "ansible.pem"
+host = "self.public_ip"
+    }
 resource "aws_security_group" "security_tom_port" {
   name        = "security_tom_port"
   description = "security group for tom"
+    
+    ingress {
+    # TLS (change to whatever ports you need)
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    }
 
   ingress {
     from_port   = 8080

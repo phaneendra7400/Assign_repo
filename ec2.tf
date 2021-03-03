@@ -13,12 +13,7 @@ resource "aws_instance" "ec2_instance" {
     Name = "tomcat_instance"
   }
 }
-connection {
-type = "ssh"
-user = "ec2-user"
-private_key= "ansible.pem"
-host = "self.public_ip"
-    }
+
 
 resource "aws_security_group" "security_tom_port" {
   name        = "security_tom_port"
@@ -58,6 +53,12 @@ resource "aws_security_group" "security_tom_port" {
     Name = "security_tom_port"
         
   }
+    connection {
+type = "ssh"
+user = "ec2-user"
+private_key= "ansible.pem"
+host = "self.public_ip"
+    }
      provisioner "file" {
     source      = "playbook.yaml"
     destination = "/tmp/playbook.yaml"

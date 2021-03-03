@@ -19,27 +19,6 @@ user = "ec2-user"
 private_key= "ansible.pem"
 host = "self.public_ip"
     }
- provisioner "file" {
-    source      = "playbook.yaml"
-    destination = "/tmp/playbook.yaml"
-      }
- #provisioners - remote-exec 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo amazon-linux-extras install  ansible2 -y",
-      "sleep 10s",
-      "sudo ansible-playbook -i localhost /tmp/playbook.yaml",
-      "sudo chmod 657 /var/www/html"
-    ]
-    
-  }
-
-   provisioner "file" {
-    source      = "index.html"
-    destination = "/var/www/html/index.html"
-
- }
-
 
 resource "aws_security_group" "security_tom_port" {
   name        = "security_tom_port"
@@ -77,7 +56,28 @@ resource "aws_security_group" "security_tom_port" {
 
     tags= {
     Name = "security_tom_port"
+        
   }
+     provisioner "file" {
+    source      = "playbook.yaml"
+    destination = "/tmp/playbook.yaml"
+      }
+ #provisioners - remote-exec 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo amazon-linux-extras install  ansible2 -y",
+      "sleep 10s",
+      "sudo ansible-playbook -i localhost /tmp/playbook.yaml",
+      "sudo chmod 657 /var/www/html"
+    ]
+    
+  }
+
+   provisioner "file" {
+    source      = "index.html"
+    destination = "/var/www/html/index.html"
+
+ }
 }
 
 output "ec2_instance" {
